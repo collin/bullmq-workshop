@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    init: true
+    volumes:
+      # Use a named volume for the source code
+      - my-app:/workspace
+      # Persist VS Code extensions between rebuilds
+      - vscode-extensions:/root/.vscode-server/extensions
+      # And/or for VS Code Insiders
+      - vscode-extensions-insiders:/root/.vscode-server-insiders/extensions
+
+    container_name: bullmq-workshop
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+  
+  redis:
+    image: redis:7-alpine
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes: 
+      - redis-data:/data
+
+  bull-board:
+    image: pvoronin/bullmq-dashboard-runnable
+    command: --redis-host redis deliver-emails
+    ports:
+     - 8082:3000
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOSTS=local:redis:6379
+    ports:
+    - "8081:8081"
+
+volumes:
+  my-app:
+  vscode-extensions:
+  vscode-extensions-insiders:
+  redis-data:
