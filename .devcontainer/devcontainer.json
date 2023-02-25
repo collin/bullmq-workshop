@@ -6,7 +6,15 @@
   "service": "app",
   "shutdownAction": "stopCompose",
   // Open the sub-folder with the source code
-  "workspaceFolder": "/workspace"
+  "workspaceFolder": "/workspace",
+  "portsAttributes": {
+    "8081": {
+      "label": "Redis Browser"
+    },
+    "8082": {
+      "label": "Bull Board"
+    }
+  }
   // Set *default* container specific settings.json values on container create.
   // "customizations": {
   //   "vscode": {
