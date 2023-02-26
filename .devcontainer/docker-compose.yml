@@ -16,28 +16,44 @@ services:
     container_name: bullmq-workshop
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
-  
+
+  ingress:
+    image: node:18-alpine
+    volumes:
+      - ../:/workspace
+    command:
+      node --watch /workspace/serve-http.js
+    ports:
+      - "80:80"
+
   redis:
     image: redis:7-alpine
     ports:
-      - '6379:6379'
+      - "6379:6379"
     command: redis-server --save 20 1 --loglevel warning
-    volumes: 
+    volumes:
       - redis-data:/data
 
-  bull-board:
-    image: pvoronin/bullmq-dashboard-runnable
-    command: --redis-host redis deliver-emails
-    ports:
-     - 8082:3000
-
-  redis-browser:
-    image: redislabs/redisinsight:latest
+  redis-commander:
+    image: rediscommander/redis-commander:latest
     restart: always
     environment:
-    - REDIS_HOSTS=local:redis:6379
-    ports:
-    - "8081:8001"
+      - REDIS_HOSTS=local:redis:6379
+      - PORT=80
+      - ADDRESS=0.0.0.0
+      - URL_PREFIX=/redis
+    expose:
+      - 80
+
+  bull-board:
+    image: node:18-alpine
+    volumes:
+      - ../:/workspace
+
+    command: node --watch /workspace/serve-bull-board.js
+
+    expose:
+      - 80
 
 volumes:
   my-app:

@@ -10,6 +10,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@bull-board/api": "^4.12.1",
+    "@bull-board/express": "^4.12.1",
+    "bullmq": "^3.9.0",
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
+    "morgan": "^1.10.0",
     "typescript": "^4.9.5"
   }
 }
