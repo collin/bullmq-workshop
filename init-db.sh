@@ -1,0 +1,2 @@
+createuser postgres
+createdb publisher

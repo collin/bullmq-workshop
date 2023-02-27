@@ -5,21 +5,19 @@ const { ExpressAdapter } = require("@bull-board/express");
 const { Queue } = require("bullmq");
 const express = require("express");
 const morgan = require("morgan");
+const { allQueues } = require("./queues");
 
 const app = express();
 app.use(morgan("dev"));
-const serverAdapter = new ExpressAdapter();
-serverAdapter.setBasePath("/bullmq");
-app.use("/bullmq", serverAdapter.getRouter());
 
-const connection = {
-  host: "redis",
-  port: 6379,
-  password: undefined,
-};
+const serverAdapter = new ExpressAdapter();
+serverAdapter.setBasePath(process.env.BASE_PATH);
+app.use(process.env.BASE_PATH, serverAdapter.getRouter());
+
+
 
 createBullBoard({
-  queues: [new BullMQAdapter(new Queue("send-email", { connection }))],
+  queues: allQueues.map((queue) => new BullMQAdapter(queue)),
   serverAdapter,
 });
 
