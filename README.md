@@ -1,1 +1,1 @@
-# bullmq-workshop
+# Graphql playground
