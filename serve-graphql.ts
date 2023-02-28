@@ -116,16 +116,16 @@ const queues: Record<string, Queue> = {};
 const getQueue = (name: string) =>
   (queues[name] ||= new Queue(name, { sharedConnection: true, connection: redisConnection }));
 
-const tableSpace: Record<string, Record<string, "field" | "table">> = {
+const tableSpace: Record<string, Record<string, "field" | "relationship">> = {
   books: {
     id: "field",
     title: "field",
-    authors: "table",
+    authors: "relationship",
   },
   authors: {
     id: "field",
     name: "field",
-    books: "table",
+    books: "relationship",
   },
   authorship: {
     author_id: "field",
@@ -164,7 +164,7 @@ class SQLQueryResolver {
   Field(field: FieldNode) {
     const fieldName = field.name.value;
     const tableDef = tableSpace[field.name.value];
-    if (fieldName in tableSpace || tableDef?.[fieldName] === "table") {
+    if (fieldName in tableSpace || tableDef?.[fieldName] === "relationship") {
       console.log("selectionSet.selection", field.name.value);
       const table = `publisher.${field.name.value}`;
       const fields: string[] = [];
