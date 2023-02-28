@@ -1,0 +1,156 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Query Resolver",
+  "steps": [
+    {
+      "file": ".devcontainer/docker-compose.yml",
+      "title": "Docker: postgres",
+      "description": "This project includes a docker-compose file that boots up a postgres db.",
+      "line": 39,
+      "selection": {
+        "start": {
+          "line": 38,
+          "character": 3
+        },
+        "end": {
+          "line": 39,
+          "character": 30
+        }
+      }
+    },
+    {
+      "file": ".devcontainer/docker-compose.yml",
+      "description": "It also boots up a very bare-bones graphql server.",
+      "line": 77,
+      "selection": {
+        "start": {
+          "line": 72,
+          "character": 3
+        },
+        "end": {
+          "line": 77,
+          "character": 84
+        }
+      },
+      "title": "Docker: graphql-server"
+    },
+    {
+      "file": "serve-graphql.ts",
+      "description": "There are some other type definitions in this file related to building a GraphQL API for BullMQ resources. But for this tour we can focus on the Book and Author types.",
+      "line": 45,
+      "selection": {
+        "start": {
+          "line": 35,
+          "character": 1
+        },
+        "end": {
+          "line": 45,
+          "character": 4
+        }
+      },
+      "title": "GraphQL Type Defs"
+    },
+    {
+      "file": "serve-graphql.ts",
+      "description": "Every time the server boots, those tables will be re-created.",
+      "line": 339,
+      "selection": {
+        "start": {
+          "line": 317,
+          "character": 1
+        },
+        "end": {
+          "line": 339,
+          "character": 6
+        }
+      },
+      "title": "SQL Schema Creation"
+    },
+    {
+      "file": "serve-graphql.ts",
+      "description": "And populated with some fake data.",
+      "line": 356,
+      "selection": {
+        "start": {
+          "line": 343,
+          "character": 1
+        },
+        "end": {
+          "line": 356,
+          "character": 4
+        }
+      },
+      "title": "Seed Data"
+    },
+    {
+      "file": "serve-graphql.ts",
+      "description": "There are some root level queries to read from those tables.",
+      "line": 103,
+      "selection": {
+        "start": {
+          "line": 102,
+          "character": 1
+        },
+        "end": {
+          "line": 103,
+          "character": 19
+        }
+      },
+      "title": "GraphQL Root Query"
+    },
+    {
+      "file": "serve-graphql.ts",
+      "description": "Those queries are resolved by a `SQLQueryResolver` class. It takes in an instance of a pg Pool and the raw AST `info.fieldNodes[0]` for the graphql query.",
+      "line": 212,
+      "selection": {
+        "start": {
+          "line": 207,
+          "character": 1
+        },
+        "end": {
+          "line": 212,
+          "character": 7
+        }
+      },
+      "title": "Query Resolvers"
+    },
+    {
+      "file": "serve-graphql.ts",
+      "description": "The SQLQueryResolver uses a recursive visitor pattern to walk the GraphQL AST.",
+      "line": 147,
+      "selection": {
+        "start": {
+          "line": 140,
+          "character": 1
+        },
+        "end": {
+          "line": 147,
+          "character": 6
+        }
+      },
+      "title": "Recursive Visitor Pattern"
+    },
+    {
+      "file": "serve-graphql.ts",
+      "description": "This requires a little bit of metadata about the types of sub-fields. Here I'm stashing whether the sub-field is a referencing table or a field. (This data could be automated/semi-automated.)",
+      "line": 134,
+      "selection": {
+        "start": {
+          "line": 119,
+          "character": 1
+        },
+        "end": {
+          "line": 134,
+          "character": 3
+        }
+      },
+      "title": "Table Metadata"
+    },
+    {
+      "file": "serve-graphql.ts",
+      "description": "The queries are constructed with nested selects and make use of postgres's built-in json aggregation.\n\n(There is a missing piece here to construct where clauses to actually follow foreign key relationships here.)",
+      "line": 178,
+      "title": "json_agg"
+    }
+  ]
+}
